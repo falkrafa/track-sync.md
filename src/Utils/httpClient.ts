@@ -27,13 +27,25 @@ const TokenInterceptor = (
 const baseTokenInterceptor = async (
   config: InternalAxiosRequestConfig,
 ): Promise<InternalAxiosRequestConfig> => {
-  // const tokenService = new TokenService();
+  const tokenService = new TokenService();
 
-  // const token = await tokenService.getRefreshToken();
-  const token =
-    'BQAc7elGcgFY2su1w3Y95oGeCjOEXPxMnpXDdYJRDeqEB5jAl7uPf3x6PhdWSuPOnc6PVc2hTKVqaV9jG4C1LWMbcTyUqLIvPT1JyVt7RtTyG_wXDwRAswZLpjyUtlVpeujbFOZ_fVYOqqKhirq69xFams0tjOcCGew0YdDZIuoYTapc2imwOzsXc38Kfyf8gFY7Zk9LqJY02WEA38In9V201OGM7eZfZ2e3p_xDAdefRVoP';
+  const token = await tokenService.getRefreshToken();
+
   if (token) {
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+};
+
+const githubTokenInterceptor = (
+  config: InternalAxiosRequestConfig,
+): InternalAxiosRequestConfig => {
+  const token = process.env.GITHUB_TOKEN;
+
+  if (token) {
+    config.headers['Content-Type'] = 'application/json';
     config.headers.Authorization = `Bearer ${token}`;
   }
 
@@ -45,7 +57,10 @@ const ResponseInterceptor = (response: AxiosResponse): AxiosResponse => {
 };
 
 const ErrorInterceptor = (error: AxiosError): Promise<AxiosError> => {
-  console.error('Error:', (error.response as any)?.data?.error?.message);
+  console.error(
+    'Error:',
+    (error.response && error.response.data) || error.message,
+  );
   return Promise.reject(error);
 };
 
@@ -58,7 +73,7 @@ interface Clients {
   [key: string]: AxiosInstance;
 }
 
-const { baseClient, authClient } = [
+const { baseClient, authClient, githubClient } = [
   {
     baseUrl: process.env.SPOTIFY_API_URL,
     name: 'baseClient',
@@ -67,6 +82,10 @@ const { baseClient, authClient } = [
     baseUrl: process.env.SPOTIFY_ACCOUNT_URL,
     name: 'authClient',
   },
+  {
+    baseUrl: process.env.GITHUB_API_URL,
+    name: 'githubClient',
+  },
 ].reduce<Clients>((acc, { baseUrl, name }: ClientConfig) => {
   acc[name] = axios.create({
     baseURL: baseUrl,
@@ -74,12 +93,14 @@ const { baseClient, authClient } = [
 
   if (name === 'authClient') {
     acc[name].interceptors.request.use(TokenInterceptor);
-  } else {
+  } else if (name === 'baseClient') {
     acc[name].interceptors.request.use(baseTokenInterceptor);
+  } else {
+    acc[name].interceptors.request.use(githubTokenInterceptor);
   }
   acc[name].interceptors.response.use(ResponseInterceptor, ErrorInterceptor);
 
   return acc;
 }, {});
 
-export { baseClient, authClient };
+export { baseClient, authClient, githubClient };
