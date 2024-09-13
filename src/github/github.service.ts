@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { githubClient } from '../Utils/httpClient';
-import { TrackService } from 'src/track/track.service';
+import { TrackService } from '../track/track.service';
 
 @Injectable()
 export class GithubService {
@@ -44,6 +44,7 @@ export class GithubService {
   }
 
   async updateProfileReadme() {
+    console.log('Updating profile readme...');
     const { sha, content } = await this.getProfileReadme();
 
     const lastTrack = await this.trackService.getRecentTracks();

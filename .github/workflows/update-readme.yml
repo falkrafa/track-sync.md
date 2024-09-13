@@ -1,0 +1,34 @@
+name: Update README
+
+on:
+  schedule:
+    - cron: "* * * * *"
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run cron:update-readme
+        run: yarn run:cron:update-readme
+        env:
+          SPOTIFY_CLIENT_ID= ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_SECRET= ${{ secrets.SPOTIFY_SECRET }}
+          SPOTIFY_ACCOUNT_URL= ${{ secrets.SPOTIFY_ACCOUNT_URL }}
+          SPOTIFY_API_URL= ${{ secrets.SPOTIFY_API_URL }}
+          SPOTIFY_REFRESH_TOKEN= ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
+          GITHUB_TOKEN= ${{ secrets.GIT_TOKEN }}
+          GITHUB_API_URL= ${{ secrets.GIT_API_URL }}
+          GITHUB_USER= ${{ secrets.GIT_USER }}
+          GITHUB_EMAIL= ${{ secrets.GIT_EMAIL }}
