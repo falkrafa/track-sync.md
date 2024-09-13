@@ -2,7 +2,7 @@ name: Update README
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+     - cron: "0 * * * *"
 
 jobs:
   update-readme:
@@ -23,12 +23,12 @@ jobs:
       - name: Run cron:update-readme
         run: yarn run:cron:update-readme
         env:
-          SPOTIFY_CLIENT_ID= ${{ secrets.SPOTIFY_CLIENT_ID }}
-          SPOTIFY_SECRET= ${{ secrets.SPOTIFY_SECRET }}
-          SPOTIFY_ACCOUNT_URL= ${{ secrets.SPOTIFY_ACCOUNT_URL }}
-          SPOTIFY_API_URL= ${{ secrets.SPOTIFY_API_URL }}
-          SPOTIFY_REFRESH_TOKEN= ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
-          GITHUB_TOKEN= ${{ secrets.GIT_TOKEN }}
-          GITHUB_API_URL= ${{ secrets.GIT_API_URL }}
-          GITHUB_USER= ${{ secrets.GIT_USER }}
-          GITHUB_EMAIL= ${{ secrets.GIT_EMAIL }}
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_SECRET: ${{ secrets.SPOTIFY_SECRET }}
+          SPOTIFY_ACCOUNT_URL: ${{ secrets.SPOTIFY_ACCOUNT_URL }}
+          SPOTIFY_API_URL: ${{ secrets.SPOTIFY_API_URL }}
+          SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+          GITHUB_API_URL: ${{ secrets.GIT_API_URL }}
+          GITHUB_USER: ${{ secrets.GIT_USER }}
+          GITHUB_EMAIL: ${{ secrets.GIT_EMAIL }}
