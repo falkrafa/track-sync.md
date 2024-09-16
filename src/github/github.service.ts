@@ -46,7 +46,7 @@ export class GithubService {
   async updateProfileReadme() {
     console.log('Updating profile readme...');
     const { sha, content } = await this.getProfileReadme();
-
+    console.log(content);
     const lastTrack = await this.trackService.getRecentTracks();
     const lastListenedTrack = lastTrack[0];
 
