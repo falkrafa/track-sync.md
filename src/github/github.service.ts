@@ -7,6 +7,7 @@ export class GithubService {
   constructor(private trackService: TrackService) {}
 
   async getProfileReadme() {
+    console.log('userProfile:', process.env.GITHUB_USER);
     const { data } = await githubClient.get(
       `${process.env.GITHUB_USER}/${process.env.GITHUB_USER}/contents/README.md`,
     );
