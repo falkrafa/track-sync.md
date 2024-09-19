@@ -19,10 +19,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-      - name: Debug environment variables
-        run: |
-          echo "SPOTIFY_ACCOUNT_URL=${{ secrets.SPOTIFY_ACCOUNT_URL }}"
-          echo "SPOTIFY_API_URL=${{ secrets.SPOTIFY_API_URL }}"
 
       - name: Run cron:update-readme
         env:

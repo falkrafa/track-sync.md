@@ -83,7 +83,7 @@ const { baseClient, authClient, githubClient } = [
     name: 'authClient',
   },
   {
-    baseUrl: process.env.GITHUB_API_URL,
+    baseUrl: 'https://api.github.com/repos/',
     name: 'githubClient',
   },
 ].reduce<Clients>((acc, { baseUrl, name }: ClientConfig) => {
