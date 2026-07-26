@@ -17,6 +17,7 @@
     "test:watch": "jest --watch",
     "run:cron": "ts-node src/cron/runner.ts",
     "run:cron:update-readme": "yarn run:cron update-readme",
+    "auth:spotify": "ts-node scripts/get-refresh-token.ts",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"

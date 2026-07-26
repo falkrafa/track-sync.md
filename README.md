@@ -44,10 +44,13 @@
    SPOTIFY_ACCOUNT_URL=
    SPOTIFY_API_URL=
    SPOTIFY_REFRESH_TOKEN=
+   SPOTIFY_REDIRECT_URI=
    GITHUB_TOKEN=
    GITHUB_USER=
    GITHUB_EMAIL=
    ```
+
+   `SPOTIFY_REDIRECT_URI` must exactly match a Redirect URI registered on your app in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard) (e.g. `http://127.0.0.1:8888/callback`). Spotify requires HTTPS on redirect URIs except for the loopback IP literal `127.0.0.1` — `localhost` is not accepted.
 
 4. Run the server locally:
 
@@ -77,6 +80,16 @@ This repository includes a GitHub Actions setup to run a cron job that automatic
 - `GITHUB_TOKEN`
 - `GITHUB_USER`
 - `GITHUB_EMAIL`
+
+### Refreshing the Spotify token
+
+Spotify [expires user refresh tokens after 6 months](https://developer.spotify.com/blog/2026-06-18-refresh-token-expiration). When the cron job starts failing with `invalid_grant: Refresh token revoked`, generate a new one:
+
+```bash
+yarn auth:spotify
+```
+
+This opens a local server, prints an authorization URL to open in your browser, and prints a new `refresh_token` once you approve access. Update the `SPOTIFY_REFRESH_TOKEN` GitHub secret with that value.
 
 ## License
 
